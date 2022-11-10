@@ -46,21 +46,38 @@ else
         break;
       end
     end
+  else %% neither the first input nor the second is found
+    sz1 = size(table_3);
+    for i=1:sz1(1)
+      if(table_3(i,in1_col)>in1)
+        if i==1
+          display("Can't interpolate because number is too small");
+          break;
+        end
+      else
+        min = table_3(i,in1_col);
+        if table_3(i+1,in1_col)>min
+          max = table_3(i+1,in1_col);
+          i1 = find(table_3(:,in1_col)==min);
+          i2 = find(table_3(:,in1_col)==max);
+          mat = in1./(table_3(i1,in1_col)+table_3(i2,in1_col)) .* (table_3(i1,:)+table_3(i2,:));
+          sz2 = size(mat);
+          for i=1:sz2(1)
+            if mat(i,in2_col)>in2
+              if i==1
+                display("Can't interpolate because number is too small");
+                break;
+              else
+                mat(i-1,in2_col)
+                fixed_state = in2./(mat(i-1,in2_col)+mat(i,in2_col)) .* (mat(i-1,:)+mat(i,:));
+                break;
+              end
+            end
+          end
+        end
+      end
+    end
   end
-%%  else %% neither the first input nor the second is found
-%%    sz = size(table_3(:,1));
-%%    for i=size(table_3)
-%%      if(table_3(i,in1_col)>in1)
-%%        if i==in2_ind(1)
-%%          display("Can't interpolate because number is too small");
-%%          break;
-%%        end
-%%      else
-%%        in1_ind = i;
-%%        for j=
-%%      end
-%%    end
-%%  end
 end
 
 endfunction
